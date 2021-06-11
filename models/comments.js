@@ -22,12 +22,11 @@ const doubtSchema = new mongoose.Schema({
     },
 
     answer: {
-        type: [],
+        type: userId,
     },
-
-    isResolved: {
-        type: boolean,
-        default: false,
+    isAnswer:{
+        type: Boolean,
+        default: false
     }
     
 }, { timestamps: true });
