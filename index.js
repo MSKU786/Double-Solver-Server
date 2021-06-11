@@ -1,13 +1,15 @@
 // require express
 const express = require('express');
-
-// require routes handler from routes folder
-
-const authRoute = require('./routes/auth');
 //const postRoute = require('./routes/post');
 
 // initialize app
 const app = express();
+// require routes handler from routes folder
+
+const authRoute = require('./routes/auth');
+const doubtRoute = require('./routes/doubt');
+const commentRoute = require('./routes/comment');
+
 
 //Accessing environment variable
 require('dotenv').config()
@@ -22,7 +24,9 @@ app.use(passport.initialize());
 
 //call the route
 app.use("/api/auth", authRoute);
-//app.use("/api/post", postRoute );
+app.use("/api/doubt", doubtRoute);
+app.use("/api/comment", commentRoute);
+
 
 // make the app listen on the correct port and give a message on successful start
 app.listen(PORT, function () {

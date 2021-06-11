@@ -2,27 +2,15 @@
 const mongoose = require('mongoose');
 
 // create a schema for user
-const doubtSchema = new mongoose.Schema({
+const commentSchema = new mongoose.Schema({
     userId: {
         type: String,
         required: true,
-    },
-    title: {
-        type: String,
-        min: 6,
-        required: true
     },
     desc: {
         type: String,
         required: true,
         min: 10
-    },
-    comments: {
-        type: [],
-    },
-
-    answer: {
-        type: userId,
     },
     isAnswer:{
         type: Boolean,
@@ -34,7 +22,7 @@ const doubtSchema = new mongoose.Schema({
 // the following code will execute right before we save
 
 // create model with the schema
-const Doubt = mongoose.model('Doubt', doubtSchema);
+const Comment = mongoose.model('Comment', commentSchema);
 
 // export model
-module.exports = Doubt;
+module.exports = Comment;

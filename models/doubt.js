@@ -18,15 +18,16 @@ const doubtSchema = new mongoose.Schema({
         min: 10
     },
     comments: {
-        type: [],
+        type: Array,
+        default: [],
     },
 
     answer: {
-        type: [],
+        type: String
     },
 
     isResolved: {
-        type: boolean,
+        type: Boolean,
         default: false,
     }
     

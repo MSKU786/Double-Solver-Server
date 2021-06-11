@@ -1,42 +1,41 @@
-const Post = require( "../models/posts");
+const Doubt = require( "../models/doubt");
 
 module.exports.create = async(req,res) =>  {
     console.log(req.body);
-    const newPost = new Post({
-        userId: req.body.userId,
-    });
+    const newDoubt = new Doubt(req.body);
 
     try{
-        const post = await newPost.save();
-        res.status(200).json(post);
+        const comment = await newDoubt.save();
+        console.log(comment);
+        res.status(200).json(comment);
     }catch(err){
-        console.log(err);
+        res.status(500).json(err);
     }
 }
 
 
 module.exports.delete = async(req, res) => {
     try{
-        const postId = req.params.id;
-        const post = await Post.findById(postId);
-        if(post.userId === req.body.userId)
+        const doubtId = req.params.id;
+        const doubt = await Doubt.findById(doubtId);
+        if(doubt.userId === req.body.userId)
         {
-            await post.deleteOne();
-            res.status(200).json("Post Has been deleted");
+            await Doubt.deleteOne();
+            res.status(200).json("Doubt Has been deleted");
         }
         else{
             res.status(403).json("You can only delete your post");
         }
     }catch(err)
     {
-        res.status(400).json(err);
+        res.status(500).json(err);
     }
 }
 
 module.exports.get = async (req, res) => {
     try{
-        const post = await Post.findById(req.params.id);
-        res.status(200).json(post);
+        const doubt = await Doubt.findById(req.params.id);
+        res.status(200).json(doubt);
     }catch(err)
     {
         res.status(400).json(err);
