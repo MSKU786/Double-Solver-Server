@@ -46,7 +46,7 @@ module.exports.get = async (req, res) => {
 module.exports.getAll = async(req, res) => {
     try{
         const doubts = await Doubt.find({});
-       
+        
         const doubtList = [];
         doubts.map((friend) => {
             doubtList.push( friend );
@@ -61,19 +61,14 @@ module.exports.getAll = async(req, res) => {
 module.exports.getRemaining = async(req, res) => {
     try{
         const user = await User.findById(req.params.id);
-        const doubts = await Doubt.find({});
-        const doubtList = [];
-        doubts.map((friend) => {
-            
-            if( user.escalated.include(friend._id) || friend.answer)
-                {
-
-                }
-            
-            else
-                doubtList.push( friend );
+        
+        const remainingList = [];
+        const filterDoubt = await Doubt.find({});
+        filterDoubt.map((d) => {
+            if(!d.answer && !user.escalated.includes(d._id))
+                remainingList.push(d);
         });
-        res.status(200).json(doubtList);
+        res.status(200).json(remainingList);
     }
     catch(err){
         res.status(500).json(err);

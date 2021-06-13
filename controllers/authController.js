@@ -77,18 +77,23 @@ module.exports.delete =  async (req, res) =>{
 
 
 module.exports.onlyTA = async(req,res) => {
-    const user = await User.find({});
-    const users = [];
-    users.map((u) => {
-        if(u.usertype.localeCompare("TA"))
-        {
-            const { password, updatedAt, ...other } = user._doc;
-            //console.log(other);
-            users.push( other );
-        }
-        
-    });
-    res.status(200).json(users);
+    try{
+        const user = await User.find({});
+        const users = [];
+        user.map((u) => {
+            if(u.usertype === ("TA"))
+            {
+                const { password, updatedAt, ...other } = u._doc;
+                //console.log(other);
+                users.push( other);
+            }
+            
+        });
+        res.status(200).json(users);
+    }catch(err)
+    {
+        res.status(500).json(err);
+    }
 }
 
 //get a user
