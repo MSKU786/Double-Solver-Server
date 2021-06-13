@@ -64,10 +64,11 @@ module.exports.getRemaining = async(req, res) => {
         const doubts = await Doubt.find({});
         const doubtList = [];
         doubts.map((friend) => {
-            if(friend.id in user.escalated)
+            if(friend.id in user.escalated || friend.answer)
                 {
 
                 }
+            
             else
                 doubtList.push( friend );
         });
@@ -83,6 +84,7 @@ module.exports.accepted = async(req,res) => {
         console.log(req.body);
         const user = await User.findById(req.params.id);
         await user.updateOne({ $push:{accepted:req.body.id}});
+        res.status(200).json("Successfull");
     }catch(err){
         res.status(500).json(err);
     }
@@ -93,6 +95,7 @@ module.exports.escalated = async(req,res) => {
         console.log(req.body);
         const user = await User.findById(req.params.id);
         await user.updateOne({ $push:{escalated:req.body.id}});
+        res.status(200).json("Successfull");
     }catch(err){
         res.status(500).json(err);
     }

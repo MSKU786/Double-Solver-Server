@@ -4,15 +4,26 @@ const Doubt = require("../models/doubt")
 
 module.exports.create = async(req,res) =>  {
     console.log(req.body);
+    
     const newComment = new Comment({
         userId: req.body.userId,
-        desc: req.body.desc
+        desc: req.body.desc,
+        isAnswer: req.body.isAnswer,
     });
 
     try{
         const comment = await newComment.save();
         const pushComment = await Doubt.findById(req.params.id);
         console.log(newComment);
+        if(req.body.isAnswer)
+        {
+            await pushComment.updateOne({ $set:{ answer:newComment._id }});
+
+        }
+        else
+        {
+
+        }
         await pushComment.updateOne({ $push:{ comments:newComment._id }});
         console.log(pushComment);
         
