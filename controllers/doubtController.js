@@ -64,7 +64,8 @@ module.exports.getRemaining = async(req, res) => {
         const doubts = await Doubt.find({});
         const doubtList = [];
         doubts.map((friend) => {
-            if(friend.id in user.escalated || friend.answer)
+            
+            if( user.escalated.include(friend._id) || friend.answer)
                 {
 
                 }

@@ -11,6 +11,7 @@ router.post("/register", authController.register);
 router.delete("/:id", authController.delete);
 router.get("/user/:id", authController.get);
 router.post("/login", authController.login);
+router.get("/onlyTA", authController.onlyTA);
 
 // export the router
 module.exports = router;
