@@ -30,6 +30,12 @@ const userSchema = new mongoose.Schema({
         default: 'STUDENT',
         required: true
     },
+    accepted: {
+        type: Array
+    },
+    escalated: {
+        type: Array
+    },
     profilePicture: {
         type: String,
         default: ""

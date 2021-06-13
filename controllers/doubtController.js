@@ -1,5 +1,5 @@
 const Doubt = require( "../models/doubt");
-
+const User = require("../models/user");
 module.exports.create = async(req,res) =>  {
     console.log(req.body);
     const newDoubt = new Doubt(req.body);
@@ -42,6 +42,7 @@ module.exports.get = async (req, res) => {
     }
 }
 
+
 module.exports.getAll = async(req, res) => {
     try{
         const doubts = await Doubt.find({});
@@ -53,6 +54,46 @@ module.exports.getAll = async(req, res) => {
         res.status(200).json(doubtList);
     }
     catch(err){
+        res.status(500).json(err);
+    }
+}
+
+module.exports.getRemaining = async(req, res) => {
+    try{
+        const user = await User.findById(req.params.id);
+        const doubts = await Doubt.find({});
+        const doubtList = [];
+        doubts.map((friend) => {
+            if(friend.id in user.escalated)
+                {
+
+                }
+            else
+                doubtList.push( friend );
+        });
+        res.status(200).json(doubtList);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}
+
+module.exports.accepted = async(req,res) => {
+    try{
+        console.log(req.body);
+        const user = await User.findById(req.params.id);
+        await user.updateOne({ $push:{accepted:req.body.id}});
+    }catch(err){
+        res.status(500).json(err);
+    }
+}
+
+module.exports.escalated = async(req,res) => {
+    try{
+        console.log(req.body);
+        const user = await User.findById(req.params.id);
+        await user.updateOne({ $push:{escalated:req.body.id}});
+    }catch(err){
         res.status(500).json(err);
     }
 }

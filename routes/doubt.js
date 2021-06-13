@@ -11,7 +11,9 @@ router.post("/create", doubtController.create);
 router.delete("/:id", doubtController.delete);
 router.get("/one/:id", doubtController.get);
 router.get("/getAll", doubtController.getAll);
-
+router.get("/getRemaining/:id", doubtController.getRemaining);
+router.put("/accepted/:id", doubtController.accepted);
+router.put("/escalated/:id", doubtController.escalated);
 // export the router
 module.exports = router;
 
