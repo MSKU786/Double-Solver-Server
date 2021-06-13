@@ -25,10 +25,7 @@ module.exports.register = async (req,res) =>  {
 //Login user
 module.exports.login = async(req, res) => {
     try{
-        //console.log(req.body);
-        console.log("*****************************");
-        console.log(req.isAuthenticated());
-        console.log(req);
+        console.log(req.body);
         const user = await User.findOne({email: req.body.email});
         !user && res.status(404).json("User not found");
         const validPassword = await bcrypt.compare(req.body.password, user.password);
@@ -80,19 +77,30 @@ module.exports.delete =  async (req, res) =>{
 
 
 //get a user
+// module.exports.get = async (req, res) => {
+//     const userId = req.query.userId;
+//     const username = req.query.username;
+//     try {
+//       const user = userId
+//         ? await User.findById(userId)
+//         : await User.findOne({ username: username });
+//       const { password, updatedAt, ...other } = user._doc;
+//       console.log(other);
+//       res.status(200).json(other);
+//     } catch (err) {
+//       res.status(500).json(err);
+//     }
+//   }
 module.exports.get = async (req, res) => {
-    const userId = req.query.userId;
-    const username = req.query.username;
-    try {
-      const user = userId
-        ? await User.findById(userId)
-        : await User.findOne({ username: username });
-      const { password, updatedAt, ...other } = user._doc;
-      console.log(other);
-      res.status(200).json(other);
-    } catch (err) {
-      res.status(500).json(err);
+    try{
+        console.log(req.params.id);
+        const user = await User.findById(req.params.id);
+        const { password, updatedAt, ...other } = user._doc;
+        console.log(other);
+        res.status(200).json(other);
+    }catch(err)
+    {
+        res.status(400).json(err);
     }
-  }
-
+}
 //module.exports.

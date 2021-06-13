@@ -41,3 +41,18 @@ module.exports.get = async (req, res) => {
         res.status(400).json(err);
     }
 }
+
+module.exports.getAll = async(req, res) => {
+    try{
+        const doubts = await Doubt.find({});
+       
+        const doubtList = [];
+        doubts.map((friend) => {
+            doubtList.push( friend );
+        });
+        res.status(200).json(doubtList);
+    }
+    catch(err){
+        res.status(500).json(err);
+    }
+}

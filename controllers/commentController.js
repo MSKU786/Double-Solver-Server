@@ -1,4 +1,6 @@
-const Comment = require( "../models/Comments");
+const Comment = require( "../models/comments");
+const Doubt = require("../models/doubt")
+
 
 module.exports.create = async(req,res) =>  {
     console.log(req.body);
@@ -9,6 +11,11 @@ module.exports.create = async(req,res) =>  {
 
     try{
         const comment = await newComment.save();
+        const pushComment = await Doubt.findById(req.params.id);
+        console.log(newComment);
+        await pushComment.updateOne({ $push:{ comments:newComment._id }});
+        console.log(pushComment);
+        
         res.status(200).json(comment);
     }catch(err){
         console.log(err);
@@ -19,7 +26,7 @@ module.exports.create = async(req,res) =>  {
 module.exports.delete = async(req, res) => {
     try{
         const commentId = req.params.id;
-        const comment = await Post.findById(commentId);
+        const comment = await Comment.findById(commentId);
         if(comment.userId === req.body.userId)
         {
             await comment.deleteOne();

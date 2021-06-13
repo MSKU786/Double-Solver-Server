@@ -7,7 +7,7 @@ const router = express.Router();
 //import auth controller
 const commentController = require("../controllers/commentController");
 
-router.post("/", commentController.create);
+router.post("/:id", commentController.create);
 router.delete("/:id", commentController.delete);
 router.get("/:id", commentController.get);
 
