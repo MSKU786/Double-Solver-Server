@@ -30,6 +30,9 @@ const userSchema = new mongoose.Schema({
         default: 'STUDENT',
         required: true
     },
+    answerTime: {
+        type: Array
+    },
     accepted: {
         type: Array
     },
@@ -40,14 +43,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: ""
     },
-    city: {
-        type: String,
-        max: 50,
-    },
-    from: {
-        type: String,
-        max: 50,
-    }
 
 }, { timestamps: true });
 

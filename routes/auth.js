@@ -12,6 +12,7 @@ router.delete("/:id", authController.delete);
 router.get("/user/:id", authController.get);
 router.post("/login", authController.login);
 router.get("/only/TA", authController.onlyTA);
+router.put("/updateAnswer/:id", authController.updateAnswer);
 
 // export the router
 module.exports = router;
