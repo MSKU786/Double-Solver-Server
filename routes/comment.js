@@ -9,7 +9,7 @@ const commentController = require("../controllers/commentController");
 
 router.post("/create/:id", commentController.create);
 router.delete("/:id", commentController.delete);
-router.get("/:id", commentController.get);
+router.get("/get/:id", commentController.get);
 
 
 // export the router

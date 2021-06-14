@@ -18,14 +18,11 @@ module.exports.create = async(req,res) =>  {
         if(req.body.isAnswer)
         {
             await pushComment.updateOne({ $set:{ answer:newComment._id }});
-
         }
         else
         {
-
+            await pushComment.updateOne({ $push:{ comments:newComment._id }});
         }
-        await pushComment.updateOne({ $push:{ comments:newComment._id }});
-        console.log(pushComment);
         
         res.status(200).json(comment);
     }catch(err){
