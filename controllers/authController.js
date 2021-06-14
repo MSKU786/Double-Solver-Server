@@ -60,15 +60,7 @@ module.exports.login = async(req, res) => {
 }
 
 //Update Value
-module.exports.updateAnswer = async(req,res) => {
-    try{
-        const user = await User.findById(req.params.id);
-        await user.updateOne({ $push:{answerTime:req.body.id}});
-    }catch(err)
-    {
-        res.status(500).json(err);
-    }
-}
+
 //Delete User
 module.exports.delete =  async (req, res) =>{
     if(req.body.userId === req.params.id ){

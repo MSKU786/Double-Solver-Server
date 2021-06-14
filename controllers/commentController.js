@@ -1,9 +1,18 @@
 const Comment = require( "../models/comments");
-const Doubt = require("../models/doubt")
-
+const Doubt = require("../models/doubt");
+const User = require("../models/user");
+module.exports.updateAnswer = async(req,res) => {
+    try{
+        console.log("Updatin Nsdkfjal;ksjdf");
+        
+        res.status(200).json(user);
+    }catch(err)
+    {
+        res.status(500).json(err);
+    }
+}
 
 module.exports.create = async(req,res) =>  {
-    console.log(req.body);
     
     const newComment = new Comment({
         userId: req.body.userId,
@@ -17,7 +26,10 @@ module.exports.create = async(req,res) =>  {
         console.log(newComment);
         if(req.body.isAnswer)
         {
+
             await pushComment.updateOne({ $set:{ answer:newComment._id }});
+            const user = await User.findById(req.body.userId);
+            await user.updateOne({ $push:{answerTime:req.body.time}});
         }
         else
         {
