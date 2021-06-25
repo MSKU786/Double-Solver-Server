@@ -67,7 +67,7 @@ module.exports.getRemaining = async(req, res) => {
         const user = await User.findById(req.params.id);
         
         const remainingList = [];
-        const totalDoubt = await Doubt.findById({});
+   
     
         const filterDoubt = await Doubt.find({});
         filterDoubt.map((d) => {
