@@ -1,5 +1,7 @@
 const Doubt = require( "../models/doubt");
 const User = require("../models/user");
+
+//Create Doubts
 module.exports.create = async(req,res) =>  {
     console.log(req.body);
     const newDoubt = new Doubt(req.body);
@@ -13,7 +15,7 @@ module.exports.create = async(req,res) =>  {
     }
 }
 
-
+//Doubts delete  
 module.exports.delete = async(req, res) => {
     try{
         const doubtId = req.params.id;
@@ -32,6 +34,8 @@ module.exports.delete = async(req, res) => {
     }
 }
 
+
+//Get a doubt
 module.exports.get = async (req, res) => {
     try{
         const doubt = await Doubt.findById(req.params.id);
@@ -63,11 +67,15 @@ module.exports.getRemaining = async(req, res) => {
         const user = await User.findById(req.params.id);
         
         const remainingList = [];
+   
+    
         const filterDoubt = await Doubt.find({});
         filterDoubt.map((d) => {
             if(!d.answer && !user.escalated.includes(d._id))
                 remainingList.push(d);
         });
+
+        const noDoubts = 
         res.status(200).json(remainingList);
     }
     catch(err){

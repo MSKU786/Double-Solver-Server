@@ -1,6 +1,6 @@
 // import express
 const express = require('express');
-const passport = require('passport');
+
 // import express router
 const router = express.Router();
 

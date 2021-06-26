@@ -1,9 +1,11 @@
 const User = require( "../models/user");
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
-//const passport = require("passport");
+
 require('dotenv').config()
 
+
+//Register user
 module.exports.register = async (req,res) =>  {
     //console.log(req.body);
     const newUser = new User({
@@ -42,7 +44,7 @@ module.exports.login = async(req, res) => {
         payload,
         process.env.secretKey,
         {
-            expiresIn: 9155690, // 1 year in seconds
+            expiresIn: 3600000, // 1 hour in mili seconds
         },
         (err, token) => {
             res.status(200).json({
@@ -59,7 +61,7 @@ module.exports.login = async(req, res) => {
     }
 }
 
-//Update Value
+
 
 //Delete User
 module.exports.delete =  async (req, res) =>{
@@ -98,21 +100,7 @@ module.exports.onlyTA = async(req,res) => {
     }
 }
 
-//get a user
-// module.exports.get = async (req, res) => {
-//     const userId = req.query.userId;
-//     const username = req.query.username;
-//     try {
-//       const user = userId
-//         ? await User.findById(userId)
-//         : await User.findOne({ username: username });
-//       const { password, updatedAt, ...other } = user._doc;
-//       console.log(other);
-//       res.status(200).json(other);
-//     } catch (err) {
-//       res.status(500).json(err);
-//     }
-//   }
+//Get a user
 module.exports.get = async (req, res) => {
     try{
         console.log(req.params.id);
@@ -125,4 +113,3 @@ module.exports.get = async (req, res) => {
         res.status(400).json(err);
     }
 }
-//module.exports.
