@@ -10,7 +10,6 @@ const authRoute = require('./routes/auth');
 const doubtRoute = require('./routes/doubt');
 const commentRoute = require('./routes/comment');
 const passport = require("passport");
-const googleAuth = require("passport-google-oauth20").Strategy;  
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 //Accessing environment variable
@@ -26,27 +25,29 @@ const db = require('./config/mongoose');
 app.use(passport.initialize());
 //Passport config
 require("./config/passport")(passport);
-passport.use(new GoogleStrategy({
-    clientID: "363086331701-j72med5b4r7l2ed4059lhohudv4ggp9i.apps.googleusercontent.com",
-    clientSecret: "2O8Vm8WQXPLg4PdI6xONj9Ie",
-    callbackURL: "/auth/google/callback"
-  },
-  function(accessToken, refreshToken, profile, cb) {
-    User.findOrCreate({ googleId: profile.id }, function (err, user) {
-      return cb(err, user);
-    });
-  }
-));
+// passport.use(new GoogleStrategy({
+//     clientID: "363086331701-j72med5b4r7l2ed4059lhohudv4ggp9i.apps.googleusercontent.com",
+//     clientSecret: "2O8Vm8WQXPLg4PdI6xONj9Ie",
+//     callbackURL: "/auth/google/callback"
+//   },
+//   function(accessToken, refreshToken, profile, cb) {
+//     User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//       return cb(err, us er);
+//     });
+//   }
+// ));
 app.use(express.json());
 
 app.use(cors());
 //call the route
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['profile'] }));
+
 app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  });
+  passport.authenticate('google', { failureRedirect:  res.status(404).json(user)},authRoute)
+);
+
+
 app.use("/api/auth", authRoute);
 app.use("/api/doubt",passport.authenticate('jwt', { session: false }),  doubtRoute);
 app.use("/api/comment", passport.authenticate('jwt', { session: false }), commentRoute);
