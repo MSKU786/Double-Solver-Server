@@ -40,12 +40,12 @@ app.use(express.json());
 
 app.use(cors());
 //call the route
-app.get('/auth/google',
-  passport.authenticate('google', { scope: ['profile'] }));
+// app.get('/auth/google',
+//   passport.authenticate('google', { scope: ['profile'] }));
 
-app.get('/auth/google/callback', 
-  passport.authenticate('google', { failureRedirect:  res.status(404).json(user)},authRoute)
-);
+// app.get('/auth/google/callback', 
+//   passport.authenticate('google', { failureRedirect:  res.status(404).json(user)},authRoute)
+// );
 
 
 app.use("/api/auth", authRoute);
