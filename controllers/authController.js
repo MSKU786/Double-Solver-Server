@@ -1,8 +1,11 @@
 const User = require( "../models/user");
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
+const {OAuth2Client} = require('google-auth-library');
 //const passport = require("passport");
 require('dotenv').config()
+
+const client = new OAuth2Client("363086331701-j72med5b4r7l2ed4059lhohudv4ggp9i.apps.googleusercontent.com")
 
 module.exports.register = async (req,res) =>  {
     //console.log(req.body);
@@ -77,6 +80,16 @@ module.exports.delete =  async (req, res) =>{
     }
 }
 
+module.exports.googleLogin = async(req, res) => {
+    const {tokenId} = req.body;
+    try{
+        const response = await client.verifyIdToken(idToken:tokenId, audience: "363086331701-j72med5b4r7l2ed4059lhohudv4ggp9i.apps.googleusercontent.com");
+        console.log(response)
+
+    }catch(err){
+        console.log(err);
+    }
+}
 
 module.exports.onlyTA = async(req,res) => {
     try{

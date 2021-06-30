@@ -12,6 +12,6 @@ router.delete("/:id", authController.delete);
 router.get("/user/:id", authController.get);
 router.post("/login", authController.login);
 router.get("/only/TA", authController.onlyTA);
-
+router.get("/googleLogin", authControoler.googleLogin);
 // export the router
 module.exports = router;
