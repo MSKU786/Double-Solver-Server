@@ -3,9 +3,10 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const {OAuth2Client} = require('google-auth-library');
 //const passport = require("passport");
+var crypto = require('crypto');
 require('dotenv').config()
 
-const client = new OAuth2Client("363086331701-j72med5b4r7l2ed4059lhohudv4ggp9i.apps.googleusercontent.com")
+const client = new OAuth2Client("363086331701-j72med5b4r7l2ed4059lhohudv4ggp9i.apps.googleusercontent.com");
 
 module.exports.register = async (req,res) =>  {
     //console.log(req.body);
@@ -83,9 +84,61 @@ module.exports.delete =  async (req, res) =>{
 module.exports.googleLogin = async(req, res) => {
     const {tokenId} = req.body;
     try{
-        const response = await client.verifyIdToken(idToken:tokenId, audience: "363086331701-j72med5b4r7l2ed4059lhohudv4ggp9i.apps.googleusercontent.com");
-        console.log(response)
-
+        const response = await client.verifyIdToken({idToken:tokenId, audience: "363086331701-j72med5b4r7l2ed4059lhohudv4ggp9i.apps.googleusercontent.com"});
+        const {email_verified,name, email} = response.payload;
+        if(email_verified) {
+            const user = await User.findOne({ email: email });
+            if(user)
+            {
+                    const payload = {
+                        id: user._id,
+                        name: user.name,
+                    };
+                    // Sign token
+                    jwt.sign(
+                    payload,
+                    process.env.secretKey,
+                    {
+                        expiresIn: 9155690, // 1 year in seconds
+                    },
+                    (err, token) => {
+                        res.status(200).json({
+                        success: true,
+                        token:  token,
+                        user,
+                        });
+                    }
+                );
+            }
+            else{
+                  console.log("inside creationg user");
+                  const user = User.create({
+                      username: name,
+                      email: email,
+                      password: crypto.randomBytes(15).toString('hex')
+                  });
+                const payload = {
+                    id: user._id,
+                    name: user.username,
+                };
+            
+                // Sign token
+                jwt.sign(
+                    payload,
+                    process.env.secretKey,
+                    {
+                        expiresIn: 9155690, // 1 year in seconds
+                    },
+                    (err, token) => {
+                        res.status(200).json({
+                        success: true,
+                        token:  token,
+                        user,
+                        });
+                    }
+                );
+            }
+        }
     }catch(err){
         console.log(err);
     }
